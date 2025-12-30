@@ -1,0 +1,555 @@
+@model PathologyFormApp.Models.PathologyRequisitionForm
+@using PathologyFormApp.Models; @* Change from Controllers to Models *@
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container mt-4 hospital-form">
+    <div class="section-title">Edit Pathology Form</div>
+
+    <form asp-action="Edit" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="UHID" />
+        <input type="hidden" asp-for="CreatedById" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Patient Information</legend>
+            <div class="row mb-3">
+                <div class="col-md-6"> @* Left column for basic patient info *@
+                    <div class="row g-2"> @* First row: UHID and Lab Ref No *@
+                        <div class="col-md-6 form-group">
+                            <label asp-for="UHID" class="form-label">UHID:</label>
+                            <input asp-for="UHID" class="form-control form-control-sm" readonly />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label asp-for="LabRefNo" class="form-label required-field">Lab Ref No</label>
+                            <input asp-for="LabRefNo" class="form-control form-control-sm" required />
+                            <span asp-validation-for="LabRefNo" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2"> @* Second row: Name and Age *@
+                        <div class="col-md-6 form-group">
+                            <label asp-for="Name" class="form-label required-field">Patient Name</label>
+                            <input asp-for="Name" class="form-control form-control-sm" required />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                         <div class="col-md-6 form-group">
+                            <label asp-for="Age" class="form-label required-field">Age</label>
+                            <input asp-for="Age" class="form-control form-control-sm" type="number" required />
+                            <span asp-validation-for="Age" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="row g-2 mt-2"> @* Third row: Gender and Date *@
+                        <div class="col-md-6 form-group">
+                            <label asp-for="Gender" class="form-label required-field">Gender</label>
+                            <select asp-for="Gender" class="form-select form-select-sm" required>
+                                <option value="">Select</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label asp-for="Date" class="form-label required-field">Date:</label>
+                            <input asp-for="Date" class="form-control form-control-sm" type="date" required />
+                            <span asp-validation-for="Date" class="text-danger small"></span>
+                        </div>
+                    </div>
+                     <div class="row g-2 mt-2"> @* Fourth row: CR No and OPD/IPD *@
+                        <div class="col-md-6 form-group">
+                            <label asp-for="CRNo" class="form-label">CR No:</label>
+                            <input asp-for="CRNo" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                             <label asp-for="OPD_IPD" class="form-label">OPD / IPD:</label>
+                             <select asp-for="OPD_IPD" class="form-select form-select-sm" id="opdIpdDropdownEdit">
+                                 <option value="">Select</option>
+                                 <option>OPD</option>
+                                 <option>IPD</option>
+                             </select>
+                         </div>
+                    </div>
+                     <div class="row g-2 mt-2"> @* Fifth row: IPD/OPD No *@
+                         <div class="col-md-12 form-group"> @* Full width in this column *@
+                             <label asp-for="IPDNo" class="form-label" id="opdIpdLabelEdit">IPD/OPD No.:</label>
+                             <input asp-for="IPDNo" class="form-control form-control-sm" id="opdIpdInputEdit" placeholder="Enter Number" />
+                         </div>
+                     </div>
+                    <div class="row g-2 mt-2"> @* Sixth row: Consultant *@
+                        <div class="col-md-12 form-group"> @* Full width in this column *@
+                            <label asp-for="Consultant" class="form-label">Consultant:</label>
+                            <input asp-for="Consultant" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 border-start ps-4"> @* Right column for Obs/Gynae *@
+                    <div class="form-group mb-3">
+                        <label class="form-label">For Obs / Gynae Cases:</label>
+                        <div class="row g-2">
+                            <div class="col-6 form-group">
+                                <label asp-for="MensesOnset" class="form-label">Menses onset:</label>
+                                <input asp-for="MensesOnset" class="form-control form-control-sm" type="number" />
+                            </div>
+                            <div class="col-6 form-group">
+                                <label class="form-label">every (days):</label>
+                                <input asp-for="MensesCycle" class="form-control form-control-sm" type="number" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-6 form-group">
+                                <label asp-for="LastingDays" class="form-label">Lasting (days):</label>
+                                <input asp-for="LastingDays" class="form-control form-control-sm" type="number" />
+                            </div>
+                            <div class="col-6 form-group">
+                                <label asp-for="Character" class="form-label">Character:</label>
+                                <input asp-for="Character" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-4 form-group">
+                                <label asp-for="LMP" class="form-label">LMP:</label>
+                                <input asp-for="LMP" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-4 form-group">
+                                <label asp-for="Gravida" class="form-label">Gravida:</label>
+                                <input asp-for="Gravida" class="form-control form-control-sm" />
+                            </div>
+                            <div class="col-4 form-group">
+                                <label asp-for="Para" class="form-label">Para:</label>
+                                <input asp-for="Para" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="row g-2 mt-2">
+                            <div class="col-6 form-group">
+                                <label asp-for="MenopauseAge" class="form-label">Menopause Age:</label>
+                                <input asp-for="MenopauseAge" class="form-control form-control-sm" type="number" />
+                            </div>
+                            <div class="col-6 form-group">
+                                <label asp-for="MenopauseYears" class="form-label">Years:</label>
+                                <input asp-for="MenopauseYears" class="form-control form-control-sm" type="number" />
+                            </div>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label asp-for="HormoneTherapy" class="form-label">Hormone Therapy:</label>
+                            <input asp-for="HormoneTherapy" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="row mt-3">
+            <div class="col-12 form-group">
+                <label asp-for="ClinicalDiagnosis" class="form-label">Clinical Diagnosis:</label>
+                <textarea asp-for="ClinicalDiagnosis" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+        </div>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Specimen Details</legend>
+            <div class="form-group mb-3">
+                <label asp-for="SpecimenName" class="form-label">Name of Specimen 1:</label>
+                <div class="input-group input-group-sm">
+                    <select id="specimenDropdownEdit" asp-for="SpecimenName" class="form-select form-select-sm"></select>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="addSpecimenButtonEdit">Add</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" id="removeSpecimenButtonEdit">Remove</button>
+                </div>
+                <input type="text" id="newSpecimenInputEdit" class="form-control form-control-sm mt-2" placeholder="Type new specimen and click Add">
+                <span asp-validation-for="SpecimenName" class="text-danger small"></span>
+            </div>
+
+            <div class="row g-2 mb-3">
+                <div class="col-md-6 form-group">
+                    <label class="form-label">Specimen No. for Processing:</label>
+                    <input asp-for="SpecimenNo" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-md-6 form-group">
+                    <label asp-for="DateTimeOfCollection" class="form-label">Date & Time of Collection:</label>
+                    <input asp-for="DateTimeOfCollection" class="form-control form-control-sm" type="datetime-local" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Clinical Data</legend>
+            <div class="form-group mb-3">
+                <label asp-for="XRayUSGCTMRIFindings" class="form-label">X-Ray/US/CT/MRI Findings:</label>
+                <textarea asp-for="XRayUSGCTMRIFindings" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="LaboratoryFindings" class="form-label">Laboratory Findings:</label>
+                <textarea asp-for="LaboratoryFindings" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="OperativeFindings" class="form-label">Operative Findings:</label>
+                <textarea asp-for="OperativeFindings" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="PostOperativeDiagnosis" class="form-label">Postoperative Diagnosis:</label>
+                <textarea asp-for="PostOperativeDiagnosis" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="PreviousHPCytReport" class="form-label">Previous HP/Cyt. Report with Lab Ref. No.:</label>
+                <textarea asp-for="PreviousHPCytReport" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Specimen Receiving & Pathology Processing</legend>
+            <div class="row g-2 mb-3">
+                <div class="col-md-6 form-group">
+                    <label asp-for="DateTimeOfReceivingSpecimen" class="form-label">Date & Time of Receiving the Specimen:</label>
+                    <input asp-for="DateTimeOfReceivingSpecimen" class="form-control form-control-sm" type="datetime-local" />
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="NoOfSpecimenReceived" class="form-label">No. of Specimens Received:</label>
+                    <input asp-for="NoOfSpecimenReceived" class="form-control form-control-sm" type="number" />
+                </div>
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-md-3 form-group">
+                    <label asp-for="SpecimenNo" class="form-label">Specimen No.:</label>
+                    <input asp-for="SpecimenNo" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label asp-for="MicroSectionNo" class="form-label">Micro Section No.:</label>
+                    <input asp-for="MicroSectionNo" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="form-label">Date:</label>
+                    <input class="form-control form-control-sm" type="date" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="form-label">Time:</label>
+                    <input class="form-control form-control-sm" type="time" />
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="SpecialStains" class="form-label">Special Stains:</label>
+                <input asp-for="SpecialStains" class="form-control form-control-sm" />
+            </div>
+        </fieldset>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Examination & Results</legend>
+            <div class="form-group mb-3">
+                <label asp-for="GrossDescription" class="form-label">Gross Description:</label>
+                <textarea asp-for="GrossDescription" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="MicroscopicExamination" class="form-label">Microscopic Examination:</label>
+                <textarea asp-for="MicroscopicExamination" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Impression" class="form-label">Impression:</label>
+                <textarea asp-for="Impression" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Sign-Off / Pathologist Details</legend>
+            <div class="row g-2 mb-3">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Pathologist" class="form-label required-field">Pathologist:</label>
+                    <input asp-for="Pathologist" class="form-control form-control-sm" required />
+                    <span asp-validation-for="Pathologist" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="PathologistDate" class="form-label">Date:</label>
+                    <input asp-for="PathologistDate" class="form-control form-control-sm" type="datetime-local" />
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Advice" class="form-label">Advice:</label>
+                <textarea asp-for="Advice" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-md-6 offset-md-6 text-end form-group">
+                    <label for="SignatureInputEdit" class="form-label">Signature:</label>
+                    <input type="text" id="SignatureInputEdit" name="SignatureInputEdit" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Uploaded Files</legend>
+            <div class="form-group mb-3">
+                <label class="form-label">Upload New File:</label>
+                <input type="file" name="fileUpload" class="form-control form-control-sm" multiple id="fileUploadEdit" />
+                <div id="filePreviewEdit" class="mt-2 uploaded-files">
+                    @if (ViewBag.UploadedFilesEdit is IEnumerable<UploadedFileInfo> uploadedFilesEnumerable) @* Ensure casting to UploadedFileInfo *@
+                    {
+                        @foreach (UploadedFileInfo fileInfo in uploadedFilesEnumerable) @* Explicitly use UploadedFileInfo *@
+                        {
+                            var filePath = fileInfo.FilePath;
+                            var fileName = System.IO.Path.GetFileName(filePath);
+                            DateTime? timestamp = fileInfo.Timestamp;
+                            var timestampDisplay = timestamp.HasValue ? timestamp.Value.ToString("g") : "N/A";
+                            <div class="uploaded-file d-flex align-items-center justify-content-between border rounded p-2 mb-2" data-file-path="@filePath">
+                                <a href="@Url.Content(filePath)" target="_blank" class="btn btn-sm btn-outline-primary me-2">
+                                    <i class="fas fa-file me-2"></i> @fileName (@timestampDisplay)
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm delete-uploaded-file" data-file-path="@filePath">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">Update Form</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#opdIpdDropdownEdit').change(function() {
+                const selectedValue = $(this).val();
+                const label = $('#opdIpdLabelEdit');
+                const input = $('#opdIpdInputEdit');
+
+                if (selectedValue === "OPD") {
+                    label.text("OPD No:");
+                    input.attr("placeholder", "Enter OPD Number");
+                } 
+                else if (selectedValue === "IPD") {
+                    label.text("IPD No:");
+                    input.attr("placeholder", "Enter IPD Number");
+                } 
+                else {
+                    label.text("Enter OPD/IPD Number:");
+                    input.attr("placeholder", "Enter Number");
+                }
+                
+                if (selectedValue === "IPD" || selectedValue === "OPD") {
+                    
+                } else {
+                    
+                }
+            });
+
+            $('#opdIpdDropdownEdit').trigger('change');
+
+            const form = $('.needs-validation');
+            form.on('submit', function(event) {
+              if (!form[0].checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.addClass('was-validated');
+            });
+
+            $('#addSpecimenButtonEdit').on('click', addSpecimen);
+            $('#removeSpecimenButtonEdit').on('click', removeSpecimen);
+
+            fetchSpecimensEdit();
+
+            $('#fileUploadEdit').on('change', function() {
+                const files = this.files;
+                const previewArea = $('#filePreviewEdit');
+                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/gif'];
+                const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+                 // Clear existing previews of *newly selected* files before adding new ones.
+                 // Note: This won't affect previews of files already saved to the server.
+                 previewArea.find('.new-upload-preview').remove();
+
+                Array.from(files).forEach(file => {
+                    // Validate file type
+                    if (!allowedTypes.includes(file.type)) {
+                        alert(`File type not allowed: ${file.name}\nAllowed types are PDF, Word documents, and images.`);
+                        return; // Skip this file
+                    }
+
+                    // Validate file size
+                    if (file.size > maxFileSize) {
+                         alert(`File size exceeds 10MB limit: ${file.name}`);
+                         return; // Skip this file
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                         const fileType = file.type.split('/')[0];
+                         const now = new Date();
+                         const timestamp = now.toLocaleString();
+                         let previewHtml = `<div class="uploaded-file d-flex align-items-center justify-content-between border rounded p-2 mb-2 new-upload-preview">`; // Added class for easy removal
+                         if (fileType === 'image') {
+                            previewHtml += `<div class="d-flex align-items-center"><img src="${e.target.result}" class="img-thumbnail me-2" style="max-width: 40px;" alt="${file.name}"><span>${file.name} (${timestamp})</span></div>`;
+                         } else {
+                            const fileIcon = fileType === 'application' && file.name.includes('.pdf') ? 'fas fa-file-pdf' :
+                                             file.name.includes('.doc') || file.name.includes('.docx') ? 'fas fa-file-word' :
+                                             'fas fa-file';
+                            previewHtml += `<div class="d-flex align-items-center"><i class="${fileIcon} me-2"></i><span>${file.name} (${timestamp})</span></div>`;
+                         }
+                         // Note: Delete button for new uploads would need logic to handle unsaved files.
+                         // For now, we only add delete for already saved files.
+                         previewHtml += `</div>`; // Close div
+                         previewArea.append(previewHtml);
+                    };
+                    reader.readAsDataURL(file);
+                });
+                 // Clear the file input value after selecting files
+                 $(this).val('');
+            });
+
+            // --- File Deletion Logic for EXISTING files ---
+            $('#filePreviewEdit').on('click', '.delete-uploaded-file', function() {
+                const deleteButton = $(this);
+                const filePath = deleteButton.data('file-path');
+                const fileElement = deleteButton.closest('.uploaded-file');
+
+                if (confirm('Are you sure you want to delete this file?')) {
+                    // Send AJAX request to delete the file
+                    $.ajax({
+                        url: '/Pathology/DeleteUploadedFile', // We will create this endpoint
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ filePath: filePath, uhid: $('#UHID').val() }), // Send file path and UHID
+                        success: function(response) {
+                            if (response.success) {
+                                fileElement.remove(); // Remove the file element from the UI
+                                // show a success toast (assuming showToast function exists in _Layout or here)
+                                if (typeof showToast === 'function') {
+                                     showToast('Success', response.message, 'success');
+                                } else {
+                                     alert(response.message);
+                                }
+                            } else {
+                                // show an error toast
+                                if (typeof showToast === 'function') {
+                                     showToast('Error', response.message, 'danger');
+                                } else {
+                                     alert('Error deleting file: ' + response.message);
+                                }
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("File deletion error:", status, error, xhr.responseText);
+                             // show a generic error toast
+                             if (typeof showToast === 'function') {
+                                 showToast('Error', 'An error occurred while trying to delete the file.', 'danger');
+                             } else {
+                                 alert('An error occurred while trying to delete the file.');
+                             }
+                        }
+                    });
+                }
+            });
+            // --- End File Deletion Logic ---
+
+        });
+
+        function fetchSpecimensEdit() {
+            $.get('/Specimen/GetAll', function (data) {
+                const dropdown = $('#specimenDropdownEdit');
+                dropdown.empty();
+                dropdown.append('<option value="">-- Select Specimen --</option>');
+                data.forEach(s => dropdown.append(`<option value="${s.name}">${s.name}</option>`));
+
+                if ('@Model.SpecimenName' !== '') {
+                    dropdown.val('@Model.SpecimenName');
+                }
+
+            }).fail(function(xhr, status, error) {
+                 console.error("Failed to fetch specimens for Edit view. Ensure /Specimen/GetAll endpoint exists and works. Status:", status, "Error:", error, "Response:", xhr.responseText);
+                 const dropdown = $('#specimenDropdownEdit');
+                 dropdown.empty();
+                 dropdown.append('<option value="">-- Error loading specimens --</option>');
+            });
+        }
+
+        function addSpecimen() {
+            const name = $('#newSpecimenInputEdit').val().trim();
+            if (!name) {
+                alert("Please enter a specimen name.");
+                return;
+            }
+            let exists = false;
+            $('#specimenDropdownEdit option').each(function(){
+                 if ($(this).val() && $(this).val().toLowerCase() === name.toLowerCase()) {
+                     exists = true;
+                     return false;
+                 }
+            });
+            if (exists) {
+                 alert("Specimen '" + name + "' already exists.");
+                 $('#newSpecimenInputEdit').val('');
+                 return;
+            }
+
+            $.ajax({
+                url: '/Specimen/Add',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ name: name }),
+                success: function (response) {
+                    $('#newSpecimenInputEdit').val('');
+                    fetchSpecimensEdit();
+                     if(response && response.name) {
+                        $('#specimenDropdownEdit').val(response.name);
+                     }
+                },
+                error: function(xhr, status, error) {
+                     const errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : xhr.responseText || error;
+                     alert("Error adding specimen: " + errorMessage);
+                     console.error("Error adding specimen:", status, error, xhr.responseText);
+                }
+            });
+        }
+
+        function removeSpecimen() {
+            const selectedName = $('#specimenDropdownEdit').val();
+            if (!selectedName) {
+                 alert("Please select a specimen to remove.");
+                 return;
+            }
+             if (selectedName === "") { 
+                 alert("Please select a valid specimen to remove.");
+                 return;
+             }
+
+             if (!confirm(`Are you sure you want to remove "${selectedName}" from the list? This cannot be undone."`)) {
+                 return;
+             }
+
+            $.get('/Specimen/GetAll', function (data) {
+                const specimen = data.find(x => x.name === selectedName);
+                if (specimen && specimen.id) {
+                    $.ajax({
+                        url: '/Specimen/Delete',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: specimen.id }),
+                        success: function (response) {
+                            alert(response.message || "Specimen type deleted successfully!");
+                            fetchSpecimensEdit();
+                            $('#specimenDropdownEdit').val('');
+                        },
+                        error: function(xhr, status, error) {
+                             const errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : xhr.responseText || error;
+                             alert("Error removing specimen: " + errorMessage);
+                             console.error("Error removing specimen:", status, error, xhr.responseText);
+                        }
+                    });
+                } else {
+                    alert("Selected specimen not found in the list or could not retrieve ID for deletion.");
+                    console.error("Specimen not found or ID missing for deletion:", selectedName, data);
+                }
+            }).fail(function() {
+                console.error("Failed to fetch specimens before removal attempt.");
+                 alert("Could not retrieve specimen list to process removal.");
+            });
+        }
+    </script>
+}

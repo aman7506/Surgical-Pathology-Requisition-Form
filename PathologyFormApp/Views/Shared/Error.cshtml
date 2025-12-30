@@ -1,0 +1,28 @@
+﻿@model PathologyFormApp.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container">
+    <h1 class="text-danger">Error</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+
+    @if (Model?.ShowRequestId ?? false)
+    {
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+    }
+
+    <div class="alert alert-warning">
+        <h3>Development Mode</h3>
+        <p>
+            Swapping to <strong>Development</strong> environment will display more detailed information about the error.
+        </p>
+        <p>
+            <strong>Important:</strong> Do not enable Development mode in production.
+            Set environment variable <code>ASPNETCORE_ENVIRONMENT</code> to <strong>Development</strong>
+            for local debugging and restart the server.
+        </p>
+    </div>
+</div>

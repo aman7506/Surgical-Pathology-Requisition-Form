@@ -1,0 +1,160 @@
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        @if (User.IsInRole("Doctor"))
+                        {
+                            <i class="fas fa-user-md me-2"></i>
+                            @:Welcome, Doctor!
+                        }
+                        else if (User.IsInRole("Nurse"))
+                        {
+                            <i class="fas fa-user-nurse me-2"></i>
+                            @:Welcome, Nurse!
+                        }
+                        else
+                        {
+                            <i class="fas fa-user me-2"></i>
+                            @:Welcome!
+                        }
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (User.IsInRole("Nurse"))
+                    {
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h5>Nurse Dashboard</h5>
+                                <p class="text-muted">You can perform the following actions:</p>
+                                <ul class="list-group list-group-flush mb-4">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-plus text-success me-2"></i>
+                                        <strong>Create New Forms:</strong> Fill out pathology requisition forms for patients
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-flask text-primary me-2"></i>
+                                        <strong>Manage Specimen Types:</strong> Add or remove specimen types as needed
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-save text-warning me-2"></i>
+                                        <strong>Submit Forms:</strong> Submit completed forms for doctor review
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-edit text-info me-2"></i>
+                                        <strong>Edit Drafts:</strong> Edit forms that are still in draft status
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-user-nurse fa-3x text-primary mb-3"></i>
+                                        <h6>Quick Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <a asp-controller="PathologyForm" asp-action="NurseForm" class="btn btn-success">
+                                                <i class="fas fa-plus me-2"></i>Create New Form
+                                            </a>
+                                            <a asp-controller="Specimen" asp-action="Index" class="btn btn-primary">
+                                                <i class="fas fa-flask me-2"></i>Manage Specimens
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (User.IsInRole("Doctor"))
+                    {
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h5>Doctor Dashboard</h5>
+                                <p class="text-muted">You have access to all system features:</p>
+                                <ul class="list-group list-group-flush mb-4">
+                                    <li class="list-group-item">
+                                        <i class="fas fa-list text-primary me-2"></i>
+                                        <strong>View All Forms:</strong> Access all pathology forms in the system
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-plus text-success me-2"></i>
+                                        <strong>Create Forms:</strong> Create new pathology requisition forms
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-clipboard-check text-warning me-2"></i>
+                                        <strong>Review Forms:</strong> Review and approve nurse-submitted forms
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-flask text-info me-2"></i>
+                                        <strong>Manage Specimens:</strong> Add or remove specimen types
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fas fa-edit text-secondary me-2"></i>
+                                        <strong>Edit Forms:</strong> Edit any form in the system
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-user-md fa-3x text-primary mb-3"></i>
+                                        <h6>Quick Actions</h6>
+                                        <div class="d-grid gap-2">
+                                            <a asp-controller="Pathology" asp-action="Index" class="btn btn-primary">
+                                                <i class="fas fa-list me-2"></i>View All Forms
+                                            </a>
+                                            <a asp-controller="PathologyForm" asp-action="NurseForm" class="btn btn-success">
+                                                <i class="fas fa-plus me-2"></i>Create Form
+                                            </a>
+                                            <a asp-controller="Specimen" asp-action="Index" class="btn btn-info">
+                                                <i class="fas fa-flask me-2"></i>Manage Specimens
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <i class="fas fa-user fa-3x text-muted mb-3"></i>
+                            <h5>Welcome to Pathology Requisition System</h5>
+                            <p class="text-muted">Please contact your administrator to set up your role.</p>
+                        </div>
+                    }
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>System Information</h6>
+                                <p class="mb-0">
+                                    <strong>Current User:</strong> @User.Identity?.Name<br>
+                                    <strong>Login Time:</strong> @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")<br>
+                                    <strong>Role:</strong> 
+                                    @if (User.IsInRole("Doctor"))
+                                    {
+                                        <span class="badge bg-primary">Doctor</span>
+                                    }
+                                    else if (User.IsInRole("Nurse"))
+                                    {
+                                        <span class="badge bg-success">Nurse</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">User</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

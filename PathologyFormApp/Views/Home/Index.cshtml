@@ -1,0 +1,212 @@
+﻿@model PathologyFormApp.Models.PaginatedList<PathologyFormApp.Models.PathologyRequisitionForm>
+
+@{
+    ViewData["Title"] = "Pathology Forms";
+    // Retrieve current filter values from ViewData
+    var currentFilterUHID = ViewData["CurrentFilterUHID"];
+    var currentFilterName = ViewData["CurrentFilterName"];
+    var currentFilterLabRefNo = ViewData["CurrentFilterLabRefNo"];
+    var currentFilterDate = ViewData["CurrentFilterDate"];
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Pathology Forms</h4>
+            <a asp-action="Create" asp-controller="Pathology" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Form
+            </a>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        @if (Model == null || !Model.Any())
+        {
+            <p>No pathology forms found.</p>
+        }
+        else
+        {
+            <form asp-action="Index" method="get" class="mb-4">
+                <div class="row gx-2 align-items-end">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="form-group">
+                            <label for="searchUHID" class="form-label form-label-sm">Search UHID:</label>
+                            <input type="text" name="searchUHID" id="searchUHID" class="form-control form-control-sm" value="@currentFilterUHID" placeholder="Enter UHID" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="form-group">
+                            <label for="searchName" class="form-label form-label-sm">Search Name:</label>
+                            <input type="text" name="searchName" id="searchName" class="form-control form-control-sm" value="@currentFilterName" placeholder="Enter Patient Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                         <div class="form-group">
+                            <label for="searchLabRefNo" class="form-label form-label-sm">Search Lab Ref No:</label>
+                            <input type="text" name="searchLabRefNo" id="searchLabRefNo" class="form-control form-control-sm" value="@currentFilterLabRefNo" placeholder="Enter Lab Ref No" />
+                        </div>
+                    </div>
+                     <div class="col-md-2 col-sm-6">
+                         <div class="form-group">
+                            <label for="searchDate" class="form-label form-label-sm">Search Date:</label>
+                            <input type="date" name="searchDate" id="searchDate" class="form-control form-control-sm" value="@currentFilterDate" />
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-sm-6 d-grid">
+                        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>UHID</th>
+                        <th>Patient Name</th>
+                        <th>Age</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item != null)
+                        {
+                        <tr>
+                            <td>@(item.UHID ?? "")</td>
+                            <td>@(item.Name ?? "")</td>
+                            <td>@(item.Age > 0 ? item.Age.ToString() : "")</td>
+                            <td>@(item.Date.ToString("d"))</td>
+                            <td>
+                                <span class="badge @GetStatusBadge(item.Status)">
+                                    @GetStatusDisplayName(item.Status)
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-controller="Pathology" asp-action="Details" asp-route-uhid="@item.UHID" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                @if (item.Status != FormStatus.Completed)
+                                {
+                                <a asp-action="Edit" asp-route-uhid="@item.UHID" asp-controller="Pathology" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form asp-action="Delete" asp-route-uhid="@item.UHID" method="post" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                </form>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+                var routeParameters = new Dictionary<string, string?>
+                {
+                    ["searchUHID"] = currentFilterUHID?.ToString(),
+                    ["searchName"] = currentFilterName?.ToString(),
+                    ["searchLabRefNo"] = currentFilterLabRefNo?.ToString(),
+                    ["searchDate"] = currentFilterDate?.ToString(),
+                    ["pageSize"] = Model.PageSize.ToString()
+                };
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                    Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages (@Model.TotalCount total forms)
+                </div>
+                <div>
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-searchUHID="@(routeParameters["searchUHID"])"
+                       asp-route-searchName="@(routeParameters["searchName"])"
+                       asp-route-searchLabRefNo="@(routeParameters["searchLabRefNo"])"
+                       asp-route-searchDate="@(routeParameters["searchDate"])"
+                       asp-route-pageSize="@(routeParameters["pageSize"])"
+                       class="btn btn-outline-primary @prevDisabled">
+                        Previous
+                    </a>
+                    <a asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-searchUHID="@(routeParameters["searchUHID"])"
+                       asp-route-searchName="@(routeParameters["searchName"])"
+                       asp-route-searchLabRefNo="@(routeParameters["searchLabRefNo"])"
+                       asp-route-searchDate="@(routeParameters["searchDate"])"
+                       asp-route-pageSize="@(routeParameters["pageSize"])"
+                       class="btn btn-outline-primary @nextDisabled">
+                        Next
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-2 text-end">
+                <label for="pageSizeSelect" class="form-label form-label-sm me-2">Items per page:</label>
+                <select id="pageSizeSelect" class="form-select form-select-sm d-inline-block w-auto" onchange="changePageSize(this);">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            function changePageSize(selectElement) {
+                var pageSize = selectElement.value;
+                var currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('pageSize', pageSize);
+                currentUrl.searchParams.set('pageNumber', 1);
+                window.location.href = currentUrl.toString();
+            }
+
+            window.changePageSize = changePageSize;
+
+            var pageSizeSelect = document.getElementById('pageSizeSelect');
+            if (pageSizeSelect) {
+                var currentPageSize = @(Model != null ? Model.PageSize : 10);
+                pageSizeSelect.value = currentPageSize;
+            }
+        });
+    </script>
+}
+
+@functions {
+    public string GetStatusBadge(FormStatus status)
+    {
+        return status switch
+        {
+            FormStatus.Draft => "bg-secondary",
+            FormStatus.NurseSubmitted => "bg-primary",
+            FormStatus.DoctorReviewed => "bg-info",
+            FormStatus.Completed => "bg-success",
+            _ => "bg-light text-dark"
+        };
+    }
+
+    public string GetStatusDisplayName(FormStatus status)
+    {
+        return status switch
+        {
+            FormStatus.Draft => "Draft",
+            FormStatus.NurseSubmitted => "Submitted by Nurse",
+            FormStatus.DoctorReviewed => "Reviewed by Doctor",
+            FormStatus.Completed => "Completed",
+            _ => status.ToString()
+        };
+    }
+}

@@ -1,0 +1,153 @@
+@using PathologyFormApp.ViewModels
+@model DoctorReviewViewModel
+
+@{
+    ViewData["Title"] = "Doctor's Review Form";
+    Layout = "_Layout";
+    var form = Model.FormDetails; // Alias for easier access
+}
+
+<div class="container mt-4 hospital-form">
+    <form asp-action="DoctorForm" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="DoctorInput.UHID" />
+
+        <!-- Patient & Nurse Submitted Data (Read-Only) -->
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Patient Details (Submitted by @(form.CreatedBy?.FullName ?? "Nurse"))</legend>
+            
+            <div class="row">
+                <!-- Patient Info Column -->
+                <div class="col-md-6">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">UHID:</dt>
+                        <dd class="col-sm-8">@form.UHID</dd>
+
+                        <dt class="col-sm-4">Patient Name:</dt>
+                        <dd class="col-sm-8">@form.Name</dd>
+
+                        <dt class="col-sm-4">Age/Gender:</dt>
+                        <dd class="col-sm-8">@form.Age / @form.Gender</dd>
+
+                        <dt class="col-sm-4">Lab Ref. No.:</dt>
+                        <dd class="col-sm-8">@form.LabRefNo</dd>
+                    </dl>
+                </div>
+                <!-- Consultant Info Column -->
+                <div class="col-md-6">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Consultant:</dt>
+                        <dd class="col-sm-8">@form.Consultant</dd>
+
+                        <dt class="col-sm-4">Specimen:</dt>
+                        <dd class="col-sm-8">@form.SpecimenName</dd>
+
+                        <dt class="col-sm-4">Collection Date:</dt>
+                        <dd class="col-sm-8">@form.DateTimeOfCollection.ToString("g")</dd>
+                    </dl>
+                </div>
+            </div>
+            <hr />
+            <!-- Clinical Diagnosis -->
+            <h6>Clinical Diagnosis</h6>
+            <p class="form-control-plaintext p-2 border rounded bg-light">@form.ClinicalDiagnosis</p>
+        </fieldset>
+
+        <!-- Doctor's Input Section -->
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Doctor's Review and Findings</legend>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DoctorInput.GrossDescription" class="form-label">Gross Description:</label>
+                    <textarea asp-for="DoctorInput.GrossDescription" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DoctorInput.MicroscopicExamination" class="form-label">Microscopic Examination:</label>
+                    <textarea asp-for="DoctorInput.MicroscopicExamination" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DoctorInput.Impression" class="form-label required-field">Impression:</label>
+                <textarea asp-for="DoctorInput.Impression" class="form-control" rows="3" required></textarea>
+                <span asp-validation-for="DoctorInput.Impression" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DoctorInput.SpecialStains" class="form-label">Special Stains:</label>
+                <input asp-for="DoctorInput.SpecialStains" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DoctorInput.Advice" class="form-label">Advice:</label>
+                <input asp-for="DoctorInput.Advice" class="form-control" />
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="DoctorInput.Pathologist" class="form-label required-field">Pathologist:</label>
+                <input asp-for="DoctorInput.Pathologist" class="form-control" value="@(User.Identity?.Name)" required />
+                <span asp-validation-for="DoctorInput.Pathologist" class="text-danger"></span>
+            </div>
+        </fieldset>
+        
+        <!-- Signature & Upload Section -->
+        <fieldset class="form-section border p-3 mb-4">
+            <legend class="form-section-title w-auto px-2">Signature & Upload</legend>
+            <div class="row">
+                <div class="col-md-6">
+                     <label class="form-label">Signature:</label>
+                    <div id="signature-pad-doctor" class="signature-pad border rounded">
+                        <canvas style="width: 100%; height: 150px;"></canvas>
+                        <div class="pad-footer">
+                            <small class="description text-muted">Sign above</small>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-action="clear-doctor">Clear</button>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="DoctorInput.Signature" data-action="save-doctor" />
+                </div>
+                 <div class="col-md-6">
+                    <label asp-for="DoctorInput.UploadedFiles" class="form-label">Upload Additional Files:</label>
+                    <input type="file" asp-for="DoctorInput.UploadedFiles" class="form-control" multiple />
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="text-end">
+            <a asp-action="Index" asp-controller="Pathology" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Review</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        try {
+            const canvas = document.querySelector("#signature-pad-doctor canvas");
+            const signaturePad = new SignaturePad(canvas, {
+                backgroundColor: 'rgb(255, 255, 255)'
+            });
+
+            const clearButton = document.querySelector("[data-action=clear-doctor]");
+            const saveInput = document.querySelector("[data-action=save-doctor]");
+            
+            clearButton.addEventListener("click", () => {
+                signaturePad.clear();
+                saveInput.value = '';
+            });
+
+            signaturePad.addEventListener("endStroke", () => {
+                if (!signaturePad.isEmpty()) {
+                    saveInput.value = signaturePad.toDataURL(); // Save as base64
+                }
+            });
+        } catch (e) {
+            console.error("Could not initialize the doctor's signature pad.", e);
+            alert("Error: The signature pad could not be loaded.");
+        }
+    });
+    </script>
+} 

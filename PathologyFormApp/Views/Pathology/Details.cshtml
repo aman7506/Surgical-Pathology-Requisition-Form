@@ -1,0 +1,260 @@
+@using System
+@using System.IO
+@using PathologyFormApp.Models
+@model PathologyFormApp.Models.PathologyRequisitionForm
+
+@{
+    ViewData["Title"] = "Pathology Form Details";
+}
+
+<div class="card hospital-card">
+    <div class="card-header bg-primary text-white">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h4 class="mb-0">Pathology Requisition Form Details</h4>
+            </div>
+            <div class="col-md-6 text-end">
+                <a asp-action="Edit" asp-route-id="@Model.UHID" class="btn btn-warning me-2">Edit</a>
+                <a asp-action="Index" class="btn btn-light">Back to List</a>
+                <form method="post" asp-action="Delete" asp-route-uhid="@Model.UHID" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="section-title">Pathology Form Details</div>
+        <h2>Details for @(Model.Name ?? "N/A") (UHID: @Model.UHID)</h2>
+
+        <!-- Patient Information -->
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="border-bottom pb-2">Patient Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-4">Patient Name</dt>
+                    <dd class="col-sm-8">@(Model.Name ?? "N/A")</dd>
+                    <dt class="col-sm-4">Age</dt>
+                    <dd class="col-sm-8">@Model.Age</dd>
+                    <dt class="col-sm-4">Gender</dt>
+                    <dd class="col-sm-8">@Model.Gender</dd>
+                    <dt class="col-sm-4">Lab Ref No</dt>
+                    <dd class="col-sm-8">@Model.LabRefNo</dd>
+                    <dt class="col-sm-4">Date</dt>
+                    <dd class="col-sm-8">@(Model.Date != default(DateTime) ? Model.Date.ToShortDateString() : "N/A")</dd>
+                    <dt class="col-sm-4">CR No</dt>
+                    <dd class="col-sm-8">@Model.CRNo</dd>
+                </dl>
+            </div>
+
+            <div class="col-md-6">
+                <h5 class="border-bottom pb-2">OPD/IPD Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-4">OPD/IPD</dt>
+                    <dd class="col-sm-8">@Model.OPD_IPD</dd>
+                    <dt class="col-sm-4">Number</dt>
+                    <dd class="col-sm-8">@Model.IPDNo</dd>
+                    <dt class="col-sm-4">Consultant</dt>
+                    <dd class="col-sm-8">@Model.Consultant</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Clinical Diagnosis -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Clinical Diagnosis</h5>
+                <p>@(Model.ClinicalDiagnosis ?? "N/A")</p>
+            </div>
+        </div>
+
+        <!-- Menstrual & Reproductive Information -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Menstrual & Reproductive Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Menses Onset</dt>
+                    <dd class="col-sm-9">@(Model.MensesOnset?.ToString() ?? "N/A")</dd>
+                    <dt class="col-sm-3">Lasting (Days)</dt>
+                    <dd class="col-sm-9">@(Model.LastingDays?.ToString() ?? "N/A")</dd>
+                    <dt class="col-sm-3">Character</dt>
+                    <dd class="col-sm-9">@(Model.Character ?? "N/A")</dd>
+                    <dt class="col-sm-3">LMP</dt>
+                    <dd class="col-sm-9">@(Model.LMP ?? "N/A")</dd>
+                    <dt class="col-sm-3">Gravida</dt>
+                    <dd class="col-sm-9">@(Model.Gravida ?? "N/A")</dd>
+                    <dt class="col-sm-3">Para</dt>
+                    <dd class="col-sm-9">@(Model.Para ?? "N/A")</dd>
+                    <dt class="col-sm-3">Hormone Therapy</dt>
+                    <dd class="col-sm-9">@(Model.HormoneTherapy ?? "N/A")</dd>
+                    <dt class="col-sm-3">Menopause Age</dt>
+                    <dd class="col-sm-9">@(Model.MenopauseAge?.ToString() ?? "N/A")</dd>
+                    <dt class="col-sm-3">Menopause Years</dt>
+                    <dd class="col-sm-9">@(Model.MenopauseYears?.ToString() ?? "N/A")</dd>
+                    <dt class="col-sm-3">Menses Cycle</dt>
+                    <dd class="col-sm-9">@(Model.MensesCycle?.ToString() ?? "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Specimen Receiving Information -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Specimen Receiving Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Date & Time of Receiving the Specimen</dt>
+                    <dd class="col-sm-9">@(Model.DateTimeOfReceivingSpecimen != default(DateTime) ? Model.DateTimeOfReceivingSpecimen.ToString("g") : "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Special Stains & Descriptions -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Special Stains & Descriptions</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Special Stains</dt>
+                    <dd class="col-sm-9">@(Model.SpecialStains ?? "N/A")</dd>
+                    <dt class="col-sm-3">Gross Description</dt>
+                    <dd class="col-sm-9">@(Model.GrossDescription ?? "N/A")</dd>
+                    <dt class="col-sm-3">Microscopic Examination</dt>
+                    <dd class="col-sm-9">@(Model.MicroscopicExamination ?? "N/A")</dd>
+                    <dt class="col-sm-3">Impression</dt>
+                    <dd class="col-sm-9">@(Model.Impression ?? "N/A")</dd>
+                    <dt class="col-sm-3">Previous HP/Cyt. Report</dt>
+                    <dd class="col-sm-9">@(Model.PreviousHPCytReport ?? "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Pathologist Information -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Pathologist Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Pathologist</dt>
+                    <dd class="col-sm-9">@(Model.Pathologist ?? "N/A")</dd>
+                    <dt class="col-sm-3">Pathologist Date</dt>
+                    <dd class="col-sm-9">@(Model.PathologistDate != default(DateTime) ? Model.PathologistDate.ToString("g") : "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Audit Information -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Audit Information</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Created At</dt>
+                    <dd class="col-sm-9">@(Model.CreatedAt != default(DateTime) ? Model.CreatedAt.ToString("g") : "N/A")</dd>
+                    <dt class="col-sm-3">Updated At</dt>
+                    <dd class="col-sm-9">@(Model.UpdatedAt != default(DateTime) ? Model.UpdatedAt.ToString("g") : "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Specimen Details -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Specimen Details</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">Date & Time of Collection</dt>
+                    <dd class="col-sm-9">@(Model.DateTimeOfCollection != default(DateTime) ? Model.DateTimeOfCollection.ToString("g") : "N/A")</dd>
+
+                    <dt class="col-sm-3">No. of Specimen Received</dt>
+                    <dd class="col-sm-9">@Model.NoOfSpecimenReceived</dd>
+
+                    <dt class="col-sm-3">Specimen No</dt>
+                    <dd class="col-sm-9">@(Model.SpecimenNo ?? "N/A")</dd>
+
+                    <dt class="col-sm-3">Micro Section No</dt>
+                    <dd class="col-sm-9">@(Model.MicroSectionNo ?? "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Clinical Findings -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2">Clinical Findings</h5>
+                <dl class="row dl-horizontal">
+                    <dt class="col-sm-3">X-Ray/USG/CT/MRI Findings</dt>
+                    <dd class="col-sm-9">@(Model.XRayUSGCTMRIFindings ?? "N/A")</dd>
+
+                    <dt class="col-sm-3">Laboratory Findings</dt>
+                    <dd class="col-sm-9">@(Model.LaboratoryFindings ?? "N/A")</dd>
+
+                    <dt class="col-sm-3">Operative Findings</dt>
+                    <dd class="col-sm-9">@(Model.OperativeFindings ?? "N/A")</dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Uploaded Files -->
+        @if (!string.IsNullOrEmpty(Model.UploadedFilePath))
+        {
+            var files = Model.UploadedFilePath.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2">Uploaded Files</h5>
+                    <div class="uploaded-files d-flex flex-wrap gap-3">
+                        @foreach (var file in files)
+                        {
+                            var ext = System.IO.Path.GetExtension(file).ToLower();
+                            var isImage = ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".gif" || ext == ".bmp" || ext == ".webp";
+                            var fileName = System.IO.Path.GetFileName(file);
+                            <div class="file-preview-item border rounded p-2 text-center" style="width: 140px;">
+                                @if (isImage)
+                                {
+                                    <a href="@file" target="_blank">
+                                        <img src="@file" alt="Image" class="img-fluid mb-2" style="max-height:70px;max-width:100%;object-fit:contain;" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@file" target="_blank">
+                                        <i class="fas fa-file-alt fa-2x mb-2"></i>
+                                    </a>
+                                }
+                                <div class="small text-truncate">@fileName</div>
+                                <form asp-controller="PathologyForm" asp-action="DeleteFile" asp-route-uhid="@Model.UHID" asp-route-filePath="@file" method="post" class="mt-1">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger w-100">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    public string GetStatusBadge(FormStatus status)
+    {
+        return status switch
+        {
+            FormStatus.Draft => "bg-secondary",
+            FormStatus.NurseSubmitted => "bg-primary",
+            FormStatus.DoctorReviewed => "bg-info",
+            FormStatus.Completed => "bg-success",
+            _ => "bg-light text-dark"
+        };
+    }
+
+    public string GetStatusDisplayName(FormStatus status)
+    {
+        return status switch
+        {
+            FormStatus.Draft => "Draft",
+            FormStatus.NurseSubmitted => "Submitted by Nurse",
+            FormStatus.DoctorReviewed => "Reviewed by Doctor",
+            FormStatus.Completed => "Completed",
+            _ => status.ToString()
+        };
+    }
+}

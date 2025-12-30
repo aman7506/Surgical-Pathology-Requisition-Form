@@ -1,0 +1,631 @@
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif; 
+  margin-bottom: 60px;
+  background-color: #f8f9fa; /* A very light grey, clean background */
+  color: #343a40; /* Dark grey for main text */
+  line-height: 1.6; /* Improved readability */
+}
+
+.container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* Ensure text rendering is sharp */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.footer {
+  position: relative; /* Changed from absolute to relative */
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+  background-color: #ffcc99; /* Changed: Light orange background color */
+  border-top: 1px solid #dee2e6;
+  margin-top: 30px; /* Space above footer */
+  text-align: center;
+  color: #6c757d;
+}
+
+.footer a {
+  color: #007bff; /* Primary blue for links */
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Utility Classes for better spacing in grid */
+.row.g-2 > .col, .row.g-2 > [class^="col-"] {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.row.g-2 {
+  margin-right: -0.5rem;
+  margin-left: -0.5rem;
+}
+
+/* Ensure form-group works well with rows */
+.row .form-group {
+  margin-bottom: 0;
+}
+
+.row .form-group + .row .form-group {
+  margin-top: 15px; /* Add margin between rows of form groups */
+}
+
+/* Adjust spacing for form sections inside columns if necessary */
+.col-md-6 .form-section {
+  margin-bottom: 0; /* Remove bottom margin if section is last in column */
+}
+
+/* Clearfix for rows containing form groups */
+.row.form-row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive adjustments for form groups */
+@media (max-width: 767.98px) {
+  .form-group {
+    margin-bottom: 15px; /* Slightly less margin on small screens */
+  }
+}
+
+/* Custom form styles */
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Custom form styles */
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: #0d6efd;
+}
+
+.form-floating > .form-control:focus,
+.form-floating > .form-control:not(:placeholder-shown) {
+  border-color: #0d6efd;
+}
+
+/* Card animations */
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Custom button styles */
+.btn {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600; /* Bolder button text */
+  padding: 10px 25px; /* More padding */
+  border-radius: 4px;
+  transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+   background-color: #218838;
+   border-color: #1e7e34;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+/* Card Styles (Index and Details pages) */
+.card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  background-color: #ffffff;
+}
+
+.card-header {
+  background-color: #e9ecef; /* Light grey */
+  border-bottom: 1px solid #dee2e6;
+  padding: 18px 25px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #343a40;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.card-body {
+  padding: 25px;
+}
+
+/* Table Styling (Index page) */
+.table {
+  margin-bottom: 0;
+  border-collapse: separate; /* Needed for rounded corners */
+  border-spacing: 0; /* Needed for rounded corners */
+}
+
+.table thead th {
+  background-color: #007bff; 
+  color: white;
+  border-color: #007bff;
+  font-weight: 600;
+  padding: 15px 20px;
+}
+
+.table tbody td {
+  padding: 12px 20px;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f8f9fa; 
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Add some subtle hover effect to table rows */
+.table tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+/* Details page specific styles */
+.dl-horizontal dt {
+  font-weight: 700; /* Bolder */
+  color: #495057;
+  margin-bottom: 10px; /* More space */
+}
+
+.dl-horizontal dd {
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-size: 1.6rem; /* Larger */
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 8px; /* More padding */
+}
+
+/* Badge styling */
+.badge {
+  padding: 0.5em 0.75em; /* More padding */
+  font-size: 0.9em; /* Slightly larger */
+  font-weight: 600;
+  border-radius: 0.35rem; /* Slightly more rounded */
+}
+
+.badge.bg-warning {
+  color: #212529 !important; 
+}
+
+/* Style adjustments for the header */
+header.py-2.border-bottom {
+  background: linear-gradient(to right, #1a237e, #0056b3, #007bff); /* Enhanced: More complex blue gradient */
+  color: #ffffff; /* Ensure white text for contrast */
+  /* Ensure padding and border are kept */
+  padding: 25px 0; /* Adjusted vertical padding for larger logos and better look */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Stronger and softer shadow for depth */
+  margin-bottom: 40px; /* More space below header */
+  transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+  /* Removed max-width and auto margins to make header full width */
+}
+
+header.py-2.border-bottom:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
+}
+
+.hospital-form .row.align-items-center > div {
+  padding-top: 0; /* Ensure no extra padding from default row settings */
+  padding-bottom: 0; /* Ensure no extra padding from default row settings */
+}
+
+/* Adjust logo size and styling */
+.hospital-form .col-md-2 img,
+.hospital-form .col-md-3 img { /* Ensure styling applies to both logo columns */
+  max-height: 100px; /* Increased max height for both logos */
+  width: auto; /* Maintain aspect ratio */
+  border-radius: 6px; /* Apply border radius */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add box-shadow to transition */
+  display: block; /* Ensure proper block display */
+  margin-left: auto; /* Center logo if its container is larger */
+  margin-right: auto; /* Center logo if its container is larger */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Added: Subtle box shadow for enhancement */
+}
+
+.hospital-form .col-md-2 img:hover,
+.hospital-form .col-md-3 img:hover { /* Apply hover effect to both */
+    transform: scale(1.05); /* Slightly enlarge logo on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Slightly larger shadow on hover */
+}
+
+.hospital-form .col-md-7 {
+   border-left: 1px solid #e9ecef; /* Lighter border */
+   border-right: 1px solid #e9ecef; /* Lighter border */
+   padding: 0 35px; /* Increased horizontal padding */
+   display: flex; /* Use flexbox for content alignment */
+   flex-direction: column; /* Stack content vertically */
+   justify-content: center; /* Center content vertically */
+}
+
+.hospital-form .hospital-name {
+  color: #ffffff; /* Changed: White color for visibility on blue background */
+  font-size: 1.8rem; /* Reduced font size */
+  font-weight: 800; /* Extra bold */
+  margin-bottom: 8px; /* Reverted: Increased margin below name */
+  text-transform: uppercase;
+  letter-spacing: 1px; /* Add letter spacing */
+}
+
+.hospital-form .hospital-institute {
+   color: #0275d8; /* A slightly deeper blue than primary */
+   font-size: 1.5rem; /* Reverted: Original larger font size */
+   font-weight: 700;
+   margin-top: 0;
+   margin-bottom: 10px; /* Increased margin */
+}
+
+.hospital-form .hospital-address,
+.hospital-form .hospital-contact {
+  font-size: 0.9rem; /* Reduced font size */
+  color: #ffffff; /* Changed: White color for visibility on blue background */
+  margin-bottom: 3px; /* Reduced margin */
+}
+
+.hospital-form .form-main-title {
+  color: #c0392b; /* Consistent muted red */
+  font-size: 1.4rem; /* Reduced font size */
+  font-weight: 800;
+  margin-bottom: 5px; /* Reduced margin */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: #ffffff; /* Added: White background */
+  padding: 3px 8px; /* Reduced padding */
+  display: inline-block; /* Added: Make it inline-block to wrap background around text */
+}
+
+.hospital-form .form-sub-title {
+  color: #e74c3c; /* Brighter red accent */
+  font-size: 1.4rem; /* Larger font size */
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 15px; /* Increased margin */
+  border-bottom: 2px dashed #e74c3c; /* Add a dashed underline */
+  padding-bottom: 5px; /* Padding above the dashed line */
+}
+
+/* Responsive Header Adjustments */
+@media (max-width: 768px) {
+  header.py-2.border-bottom {
+    padding: 15px 0;
+    margin-bottom: 20px;
+  }
+
+  .hospital-form .col-md-2, .hospital-form .col-md-7, .hospital-form .col-md-3 {
+    text-align: center !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 10px 15px;
+  }
+
+  .hospital-form .col-md-2 img {
+    max-height: 60px;
+  }
+
+  .hospital-form .hospital-name {
+    font-size: 1.6rem;
+  }
+
+  .hospital-form .hospital-institute {
+    font-size: 1.2rem;
+  }
+
+  .hospital-form .form-main-title {
+    font-size: 1.4rem;
+  }
+
+  .hospital-form .form-sub-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Custom form styles */
+.form-section {
+  border: 1px solid #ced4da; /* Standard Bootstrap border color */
+  border-radius: 6px; /* Slightly less rounded */
+  padding: 25px; /* More padding */
+  margin-bottom: 30px; /* More space below section */
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* Stronger, softer shadow */
+}
+
+.form-section-title {
+  font-size: 1.4rem; /* Larger title */
+  font-weight: 700; 
+  color: #1e3a8a; /* Deep blue */
+  padding: 0 20px; /* Increased padding */
+  width: auto;
+  margin-bottom: 25px; /* More space below title */
+  border-bottom: 3px solid #007bff; /* More prominent highlight */
+  display: inline-block;
+  background-color: #ffffff; /* Match section background */
+  position: relative;
+  top: -15px; /* Lift title slightly over border */
+  left: 15px;
+}
+
+.form-group {
+  margin-bottom: 20px; 
+}
+
+.form-label {
+  font-weight: 600; 
+  margin-bottom: 8px; 
+  color: #495057; /* Darker grey for labels */
+  display: block; 
+}
+
+.form-control, .form-select, .form-control-sm, .form-select-sm {
+  border: 1px solid #ced4da; /* Consistent border */
+  border-radius: 4px; 
+  padding: 10px 15px; /* Increased padding */
+  font-size: 1rem; 
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-shadow: none;
+  background-color: #ffffff; /* White background */
+}
+
+.form-control-sm, .form-select-sm {
+  padding: 8px 12px; /* Adjust padding for small size */
+  font-size: 0.9rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #0056b3; /* Deeper blue focus */
+  box-shadow: 0 0 0 0.25rem rgba(0, 86, 179, 0.25); /* Deeper blue focus ring */
+  background-color: #eef5ff; /* Very light blue background on focus */
+}
+
+textarea.form-control {
+  min-height: 120px; /* Increased minimum height */
+}
+
+.required-field::after {
+  content: " *";
+  color: #dc3545; /* Standard Bootstrap danger red */
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.input-group-sm > .form-control, .input-group-sm > .form-select, .input-group-sm > .btn {
+  padding: 0.25rem 0.5rem; /* Bootstrap small padding */
+  font-size: 0.875rem; /* Bootstrap small font size */
+  border-radius: 0.2rem; /* Bootstrap small border radius */
+}
+
+.input-group-sm > .btn {
+  padding: 0.25rem 0.75rem; /* Slightly more padding for buttons */
+}
+
+/* Uploaded Files Preview */
+.uploaded-files {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px dashed #ced4da; /* Dashed border for file area */
+  border-radius: 6px;
+}
+
+.uploaded-files .file-preview-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; 
+  padding: 8px; 
+  border: 1px solid #e9ecef; 
+  border-radius: 4px; 
+  background-color: #ffffff;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.uploaded-files .file-preview-item:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.uploaded-files .file-preview-item i {
+  font-size: 1.4rem; 
+  color: #007bff;
+  margin-right: 12px;
+}
+
+.uploaded-files .file-preview-item span {
+  word-break: break-all; /* Prevent long filenames from breaking layout */
+}
+
+/* Button Styles */
+.text-end button, .text-end a.btn {
+  margin-left: 10px; /* Spacing between buttons */
+}
+
+/* Form validation styles */
+.was-validated .form-control:valid {
+  border-color: #198754;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+}
+
+.was-validated .form-control:invalid {
+  border-color: #dc3545;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .card-header p {
+    font-size: 0.9rem;
+  }
+  
+  .btn-lg {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Custom styles moved from _Layout.cshtml */
+@media (max-width: 768px) {
+    .card-body { padding: 1rem; }
+    .search-box { padding: 1rem; }
+    .table thead th, .table tbody td { padding: 0.75rem 1rem; }
+    .navbar { padding: 0.5rem 1rem; }
+    .header-hospital .info-col { padding-left: 0.5rem; }
+    .header-hospital .logo-col img { width: 70px; height: 70px; }
+    .header-hospital { padding: 1rem 0 1rem 0; }
+    .header-hospital .info-col .hospital-title { font-size: 1.3rem; }
+    .header-hospital .info-col .form-title { font-size: 1.1rem; }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- NAVBAR ICONS & TEXT ENHANCEMENT --- */
+.navbar.bg-primary {
+  background: linear-gradient(90deg, #0056b3 0%, #007bff 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.navbar .nav-link {
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.navbar .nav-link i {
+  font-size: 1.25rem;
+  margin-right: 0.7rem !important;
+  color: #ffd700;
+  filter: drop-shadow(0 1px 2px #0002);
+}
+.navbar .nav-link:hover, .navbar .nav-link.active {
+  background: #fff;
+  color: #0056b3 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.navbar .nav-link:hover i, .navbar .nav-link.active i {
+  color: #0056b3;
+  filter: none;
+}
+
+/* Dropdown user menu styling */
+.navbar .dropdown-menu {
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+.navbar .dropdown-item {
+  font-weight: 500;
+  color: #343a40;
+  transition: background 0.2s, color 0.2s;
+}
+.navbar .dropdown-item i {
+  color: #007bff;
+  margin-right: 0.5rem;
+}
+.navbar .dropdown-item:hover {
+  background: #e9ecef;
+  color: #0056b3;
+}
+
+/* Make sure icons and text are always vertically aligned */
+.navbar .nav-link, .navbar .dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive tweaks for nav */
+@media (max-width: 991.98px) {
+  .navbar .nav-link {
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+  .navbar .nav-link i {
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<CopyRetryCount>10</CopyRetryCount>
+		<CopyRetryDelayMilliseconds>1000</CopyRetryDelayMilliseconds>
+		<OverwriteReadOnlyFiles>true</OverwriteReadOnlyFiles>
+		<CreateHardLinksForAdditionalFilesIfPossible>false</CreateHardLinksForAdditionalFilesIfPossible>
+		<CreateSymbolicLinksForAdditionalFilesIfPossible>false</CreateSymbolicLinksForAdditionalFilesIfPossible>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" />
+		<PackageReference Include="Dapper" Version="2.1.66" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+	</ItemGroup>
+
+	<!-- Exclude generated publish outputs from being included as project content to avoid recursive copy/publish issues -->
+	<ItemGroup>
+		<Content Remove="publish\**" />
+		<None Remove="publish\**" />
+		<Content Remove="publish_output\**" />
+		<None Remove="publish_output\**" />
+		<Content Remove="publish_win_x64\**" />
+		<None Remove="publish_win_x64\**" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<EditorConfigProperties>
+			<dotnet_diagnostic.IDE0040.severity>warning</dotnet_diagnostic.IDE0040.severity>
+		</EditorConfigProperties>
+	</PropertyGroup>
+
+	<!-- Debug Configuration -->
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<Optimize>false</Optimize>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+		<EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+		<EnableSourceLink>true</EnableSourceLink>
+		<EmbedAllSources>true</EmbedAllSources>
+	</PropertyGroup>
+
+	<!-- Release Configuration -->
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>portable</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<Optimize>true</Optimize>
+		<DefineConstants>TRACE</DefineConstants>
+		<EnableSourceLink>true</EnableSourceLink>
+		<EmbedAllSources>true</EmbedAllSources>
+	</PropertyGroup>
+
+	<!-- Source Link and Symbol Server Configuration -->
+	<PropertyGroup>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+	<!-- NuGet Package Source Configuration -->
+	<PropertyGroup>
+		<RestoreSources>https://api.nuget.org/v3/index.json;https://symbols.nuget.org/download/symbols</RestoreSources>
+	</PropertyGroup>
+
+	<!-- Dapper-specific Configuration -->
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);CS1701;CS1702</NoWarn>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+</Project>

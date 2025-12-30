@@ -1,0 +1,152 @@
+@model PathologyFormApp.Models.PathologyRequisitionForm
+
+@*
+    This partial view contains the Patient Information and Clinical Diagnosis sections
+    of the Pathology Requisition Form.
+*@
+
+<fieldset class="form-section border p-3 mb-4">
+    <legend class="form-section-title w-auto px-2">Patient Information</legend>
+    <div class="row mb-3">
+        <div class="col-md-6"> @* Left column for basic patient info *@
+            <div class="row g-2"> @* Use Bootstrap 5 grid gutters *@
+                <div class="col-md-6 form-group">
+                    <label asp-for="UHID" class="form-label required-field">UHID:</label>
+                    <input asp-for="UHID" class="form-control form-control-sm" required />
+                    <span asp-validation-for="UHID" class="text-danger small"></span> @* Added small class for smaller validation text *@
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="LabRefNo" class="form-label required-field">Lab Ref. No.:</label>
+                    <input asp-for="LabRefNo" class="form-control form-control-sm" required />
+                    <span asp-validation-for="LabRefNo" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-6 form-group">
+                    <label asp-for="Date" class="form-label required-field">Date:</label>
+                    <input asp-for="Date" class="form-control form-control-sm" type="date" required />
+                    <span asp-validation-for="Date" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 form-group">
+                    @* Age is required as per model *@
+                    <label asp-for="Age" class="form-label required-field">Age:</label>
+                    <input asp-for="Age" class="form-control form-control-sm" type="number" required />
+                    <span asp-validation-for="Age" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-8 form-group">
+                    <label asp-for="Name" class="form-label required-field">Name:</label>
+                    <input asp-for="Name" class="form-control form-control-sm" required />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4 form-group">
+                    <label asp-for="Gender" class="form-label required-field">Gender:</label>
+                    <select asp-for="Gender" class="form-select form-select-sm" required>
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-6 form-group">
+                    <label asp-for="CRNo" class="form-label">CR No.:</label>
+                    <input asp-for="CRNo" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-6 form-group">
+                    @* OPD/IPD and associated number *@
+                    <label asp-for="OPD_IPD" class="form-label">OPD / IPD:</label>
+                    <select asp-for="OPD_IPD" class="form-select form-select-sm" id="opdIpdDropdown">
+                        <option value="">Select</option>
+                        <option>OPD</option>
+                        <option>IPD</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-12 form-group">
+                    <label asp-for="IPDNo" class="form-label" id="opdIpdLabel">IPD/OPD No.:</label> @* Label updated by JS *@
+                    <input asp-for="IPDNo" class="form-control form-control-sm" id="opdIpdInput" placeholder="Enter Number" />
+                </div>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-12 form-group">
+                    <label asp-for="Consultant" class="form-label required-field">Consultant:</label>
+                    <input asp-for="Consultant" class="form-control form-control-sm" required />
+                    <span asp-validation-for="Consultant" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 border-start ps-4"> @* Right column for Obs/Gynae *@
+            @* Clinical Details (Obs/Gynae Cases) *@
+            <div class="form-group mb-3">
+                <label class="form-label">For Obs / Gynae Cases:</label>
+                @* Menses Onset *@
+                <div class="row g-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="MensesOnset" class="form-label">Menses onset:</label>
+                        <input asp-for="MensesOnset" class="form-control form-control-sm" type="number" />
+                    </div>
+                    <div class="col-6 form-group">
+                        <label class="form-label">every (days):</label> @* Adjusted label based on template *@
+                        <input asp-for="MensesCycle" class="form-control form-control-sm" type="number" /> @* Mapped to MensesCycle *@
+                    </div>
+                </div>
+                @* Lasting Days and Character *@
+                <div class="row g-2 mt-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="LastingDays" class="form-label">Lasting (days):</label> @* Adjusted label *@
+                        <input asp-for="LastingDays" class="form-control form-control-sm" type="number" />
+                    </div>
+                    <div class="col-6 form-group">
+                        <label asp-for="Character" class="form-label">Character:</label>
+                        <input asp-for="Character" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                @* LMP, Gravida, Para *@
+                <div class="row g-2 mt-2">
+                    <div class="col-4 form-group">
+                        <label asp-for="LMP" class="form-label">LMP:</label>
+                        <input asp-for="LMP" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-4 form-group">
+                        <label asp-for="Gravida" class="form-label">Gravida:</label>
+                        <input asp-for="Gravida" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-4 form-group">
+                        <label asp-for="Para" class="form-label">Para:</label>
+                        <input asp-for="Para" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                @* Menopause Age and Years *@
+                <div class="row g-2 mt-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="MenopauseAge" class="form-label">Menopause Age:</label>
+                        <input asp-for="MenopauseAge" class="form-control form-control-sm" type="number" />
+                    </div>
+                    <div class="col-6 form-group">
+                        <label asp-for="MenopauseYears" class="form-label">Years:</label>
+                        <input asp-for="MenopauseYears" class="form-control form-control-sm" type="number" />
+                    </div>
+                </div>
+                @* Hormone Therapy *@
+                <div class="form-group mt-2">
+                    <label asp-for="HormoneTherapy" class="form-label">Hormone Therapy:</label>
+                    <input asp-for="HormoneTherapy" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Clinical Diagnosis (Full Width Field) *@
+    <div class="row mt-3">
+        <div class="col-12 form-group">
+            <label asp-for="ClinicalDiagnosis" class="form-label">Clinical Diagnosis:</label>
+            <textarea asp-for="ClinicalDiagnosis" class="form-control form-control-sm" rows="2"></textarea>
+        </div>
+    </div>
+
+</fieldset> 

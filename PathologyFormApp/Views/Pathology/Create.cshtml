@@ -1,0 +1,476 @@
+@model PathologyFormApp.Models.PathologyRequisitionForm
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Pathology Requisition Form";
+}
+
+<div class="container mt-4 hospital-form">
+    <form asp-action="Create" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <partial name="_ConsultantFormPartial" model="Model" />
+
+         <fieldset class="form-section border p-3 mb-4">
+             <legend class="form-section-title w-auto px-2">Specimen Details</legend>
+
+        <div class="form-group mb-3">
+                 <label asp-for="SpecimenName" class="form-label">Name of Specimen 1:</label>
+                 <div class="input-group input-group-sm">
+                     <select id="specimenDropdown" asp-for="SpecimenName" class="form-select form-select-sm"></select>
+                     <button type="button" class="btn btn-outline-secondary btn-sm" id="addSpecimenButton">Add</button>
+                     <button type="button" class="btn btn-outline-danger btn-sm" id="removeSpecimenButton">Remove</button>
+                 </div>
+                <input type="text" id="newSpecimenInput" class="form-control form-control-sm mt-2" placeholder="Type new specimen and click Add" />
+                 <span asp-validation-for="SpecimenName" class="text-danger small"></span>
+        </div>
+
+               <div class="row g-2 mb-3">
+                   <div class="col-md-6 form-group">
+                    <label class="form-label">Specimen No. for Processing:</label>
+                       <input asp-for="SpecimenNo" class="form-control form-control-sm" />
+                   </div>
+                   </div>
+
+               <div class="row g-2 mb-3">
+                   <div class="col-md-6 form-group">
+                       <label asp-for="DateTimeOfCollection" class="form-label">Date & Time of Collection:</label>
+                       <input asp-for="DateTimeOfCollection" class="form-control form-control-sm" type="datetime-local" />
+                   </div>
+        </div>
+         </fieldset>
+
+           <fieldset class="form-section border p-3 mb-4">
+               <legend class="form-section-title w-auto px-2">Clinical Data</legend>
+
+        <div class="form-group mb-3">
+                      <label asp-for="XRayUSGCTMRIFindings" class="form-label">X-Ray/US/CT/MRI Findings:</label>
+                     <textarea asp-for="XRayUSGCTMRIFindings" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                     <label asp-for="LaboratoryFindings" class="form-label">Laboratory Findings:</label>
+                     <textarea asp-for="LaboratoryFindings" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                     <label asp-for="OperativeFindings" class="form-label">Operative Findings:</label>
+                     <textarea asp-for="OperativeFindings" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                      <label asp-for="PostOperativeDiagnosis" class="form-label">Postoperative Diagnosis:</label>
+                      <textarea asp-for="PostOperativeDiagnosis" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                      <label asp-for="PreviousHPCytReport" class="form-label">Previous HP/Cyt. Report with Lab Ref. No.:</label>
+                      <textarea asp-for="PreviousHPCytReport" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+          </fieldset>
+
+             <fieldset class="form-section border p-3 mb-4">
+                 <legend class="form-section-title w-auto px-2">Specimen Receiving & Pathology Processing</legend>
+                 <div class="row g-2 mb-3">
+                      <div class="col-md-6 form-group">
+                          <label asp-for="DateTimeOfReceivingSpecimen" class="form-label">Date & Time of Receiving the Specimen:</label>
+                          <input asp-for="DateTimeOfReceivingSpecimen" class="form-control form-control-sm" type="datetime-local" />
+                      </div>
+                       <div class="col-md-6 form-group">
+                           <label asp-for="NoOfSpecimenReceived" class="form-label">No. of Specimens Received:</label>
+                           <input asp-for="NoOfSpecimenReceived" class="form-control form-control-sm" type="number" />
+                       </div>
+                 </div>
+                   <div class="row g-2 mb-3">
+                       <div class="col-md-3 form-group">
+                    <label asp-for="SpecimenNo" class="form-label">Specimen No.:</label>
+                           <input asp-for="SpecimenNo" class="form-control form-control-sm" />
+                       </div>
+                        <div class="col-md-3 form-group">
+                           <label asp-for="MicroSectionNo" class="form-label">Micro Section No.:</label>
+                           <input asp-for="MicroSectionNo" class="form-control form-control-sm" />
+                       </div>
+                        <div class="col-md-3 form-group">
+                           <label class="form-label">Date:</label>
+                    <input class="form-control form-control-sm" type="date" />
+                        </div>
+                         <div class="col-md-3 form-group">
+                           <label class="form-label">Time:</label>
+                    <input class="form-control form-control-sm" type="time" />
+                         </div>
+                   </div>
+        <div class="form-group mb-3">
+                         <label asp-for="SpecialStains" class="form-label">Special Stains:</label>
+                         <input asp-for="SpecialStains" class="form-control form-control-sm" />
+        </div>
+             </fieldset>
+
+              <fieldset class="form-section border p-3 mb-4">
+                  <legend class="form-section-title w-auto px-2">Examination & Results</legend>
+
+        <div class="form-group mb-3">
+                       <label asp-for="GrossDescription" class="form-label">Gross Description:</label>
+                       <textarea asp-for="GrossDescription" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                       <label asp-for="MicroscopicExamination" class="form-label">Microscopic Examination:</label>
+                       <textarea asp-for="MicroscopicExamination" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+        <div class="form-group mb-3">
+                       <label asp-for="Impression" class="form-label">Impression:</label>
+                       <textarea asp-for="Impression" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+              </fieldset>
+
+               <fieldset class="form-section border p-3 mb-4">
+                   <legend class="form-section-title w-auto px-2">Sign-Off / Pathologist Details</legend>
+                    <div class="row g-2 mb-3">
+                       <div class="col-md-6 form-group">
+                          <label asp-for="Pathologist" class="form-label required-field">Pathologist:</label>
+                          <input asp-for="Pathologist" class="form-control form-control-sm" required />
+                           <span asp-validation-for="Pathologist" class="text-danger small"></span>
+        </div>
+                       <div class="col-md-6 form-group">
+                          <label asp-for="PathologistDate" class="form-label">Date:</label>
+                          <input asp-for="PathologistDate" class="form-control form-control-sm" type="datetime-local" />
+        </div>
+        </div>
+        <div class="form-group mb-3">
+                       <label asp-for="Advice" class="form-label">Advice:</label>
+                       <textarea asp-for="Advice" class="form-control form-control-sm" rows="3"></textarea>
+        </div>
+                      <div class="row g-2 mb-3">
+                         <div class="col-md-6 offset-md-6 text-end form-group">
+                    <label for="SignatureInput" class="form-label">Signature:</label>
+                    <input type="text" id="SignatureInput" name="SignatureInput" class="form-control form-control-sm" />
+        </div>
+        </div>
+               </fieldset>
+
+               <fieldset class="form-section border p-3 mb-4">
+                   <legend class="form-section-title w-auto px-2">Uploaded Files</legend>
+        <div class="form-group mb-3">
+                       <label class="form-label">Upload File:</label>
+                       <input type="file" name="UploadedFiles" class="form-control form-control-sm" multiple accept=".pdf,.jpeg,.jpg,.png,.doc,.docx,.xls,.xlsx,.txt,.bmp,.gif,.tiff,.csv,.ppt,.pptx,.zip,.rar,.7z,.rtf,.odt,.ods,.odp,.svg,.webp,.heic,.jfif,.mp4,.avi,.mov,.wmv,.mkv,.mp3,.wav,.aac,.ogg,.flac,.m4a,.json,.xml,.html,.htm,.md,.log,.ini,.yml,.yaml,.psd,.ai,.eps,.indd,.xd,.sketch,.fig,.apk,.exe,.dll,.bat,.sh,.py,.js,.ts,.css,.scss,.less,.php,.rb,.go,.swift,.kt,.dart,.c,.cpp,.h,.hpp,.cs,.vb,.sql,.db,.sqlite,.accdb,.mdb,.bak,.iso,.img,.dmg,.pkg,.deb,.rpm,.msi,.cab,.bin,.dat,.tmp,.torrent" />
+                <div id="filePreviewArea" class="mt-2 uploaded-files"></div>
+        </div>
+               </fieldset>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Handle OPD/IPD dropdown change
+            $('#opdIpdDropdown').change(function() {
+                const selectedValue = $(this).val();
+                const label = $('#opdIpdLabel');
+                const input = $('#opdIpdInput');
+
+                if (selectedValue === "OPD") {
+                    label.text("OPD No:");
+                    input.attr("placeholder", "Enter OPD Number");
+                } 
+                else if (selectedValue === "IPD") {
+                    label.text("IPD No:");
+                    input.attr("placeholder", "Enter IPD Number");
+                } 
+                else {
+                    label.text("Enter OPD/IPD Number:"); // Default label
+                    input.attr("placeholder", "Enter Number");
+                }
+                 // Add validation classes based on selection if needed, e.g., making IPDNo required for IPD
+                 // Note: Requires manual validation check on server side if IPDNo is not always required by model
+                 if (selectedValue === "IPD" || selectedValue === "OPD") {
+                      // Optionally add a visual required indicator if IPDNo becomes required client-side
+                     // label.addClass('required-field');
+                 } else {
+                      // label.removeClass('required-field');
+                 }
+            });
+
+            // Trigger change event on page load if a value is already selected (e.g., during edit)
+            $('#opdIpdDropdown').trigger('change');
+
+             // Apply Bootstrap validation classes on form submission
+            const form = $('.needs-validation');
+            form.on('submit', function(event) {
+              if (!form[0].checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.addClass('was-validated');
+            });
+
+            // --- Bind click events using jQuery ---
+            $('#addSpecimenButton').on('click', addSpecimen);
+            $('#removeSpecimenButton').on('click', removeSpecimen);
+            // --- End event binding ---
+
+            fetchSpecimens(); // Call fetchSpecimens when the document is ready to populate the dropdown
+
+            // --- File Upload Preview Logic (Enhanced) ---
+            const fileInput = $('#fileUploadInput');
+            const filePreviewArea = $('#filePreviewArea');
+            let filesToUpload = []; // Array to hold files to be uploaded
+
+            fileInput.on('change', function() {
+                const files = Array.from(this.files); // Convert FileList to Array
+                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/gif'];
+                const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+                files.forEach(file => {
+                    // Validate file type
+                    if (!allowedTypes.includes(file.type)) {
+                        alert(`File type not allowed: ${file.name}\nAllowed types are PDF, Word documents, and images.`);
+                        return; // Skip this file
+                    }
+
+                    // Validate file size
+                    if (file.size > maxFileSize) {
+                         alert(`File size exceeds 10MB limit: ${file.name}`);
+                         return; // Skip this file
+                    }
+
+                    // Prevent duplicate files (optional, based on name and size)
+                    if (filesToUpload.some(existingFile => existingFile.name === file.name && existingFile.size === file.size)) {
+                         alert(`File already selected: ${file.name}`);
+                         return; // Skip this file
+                    }
+
+                    filesToUpload.push(file); // Add valid file to the list
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const fileType = file.type.split('/')[0];
+                        const now = new Date();
+                        const timestamp = now.toLocaleString(); // Get current date and time
+
+                        let previewHtml = `<div class="uploaded-file d-flex align-items-center justify-content-between border rounded p-2 mb-2">`;
+                        if (fileType === 'image') {
+                            previewHtml += `<div class="d-flex align-items-center"><img src="${e.target.result}" class="img-thumbnail me-2" style="max-width: 40px;" alt="${file.name}"><span>${file.name} (${timestamp})</span></div>`;
+                        } else {
+                             // Use Bootstrap Icons or Font Awesome for file type
+                            const fileIcon = fileType === 'application' && file.name.includes('.pdf') ? 'fas fa-file-pdf' : 
+                                             file.name.includes('.doc') || file.name.includes('.docx') ? 'fas fa-file-word' : 
+                                             'fas fa-file';
+                            previewHtml += `<div class="d-flex align-items-center"><i class="${fileIcon} me-2"></i><span>${file.name} (${timestamp})</span></div>`;
+                        }
+                        previewHtml += `<button type="button" class="btn btn-danger btn-sm remove-file" data-file-name="${file.name}"><i class="fas fa-times"></i></button></div>`; // Added remove button
+                        
+                        filePreviewArea.append(previewHtml);
+                    };
+                    reader.readAsDataURL(file); // Read file as Data URL for preview
+                });
+
+                // Clear the file input value so the same file can be selected again if needed
+                 fileInput.val(''); 
+            });
+
+            // Handle remove button click
+            filePreviewArea.on('click', '.remove-file', function() {
+                const fileNameToRemove = $(this).data('file-name');
+                // Remove file from the filesToUpload array
+                filesToUpload = filesToUpload.filter(file => file.name !== fileNameToRemove);
+                // Remove the preview element from the UI
+                $(this).closest('.uploaded-file').remove();
+                 // Note: For required validation, you might need to re-check if filesToUpload is empty here.
+            });
+
+            // Intercept form submission to manually add files to FormData
+            form.on('submit', function(event) {
+                event.preventDefault(); // Prevent standard form submission
+
+                // Client-side check for required file input (optional, server will validate)
+                // if (filesToUpload.length === 0 && fileInput.prop('required')) {
+                //      // The browser's built-in validation with 'required' attribute is usually sufficient
+                //      // but you might want a custom message if filesToUpload array is empty.
+                // }
+
+                const formData = new FormData(this);
+                // Append files from the filesToUpload array
+                filesToUpload.forEach(file => {
+                    formData.append('fileUpload', file); // 'fileUpload' must match the parameter name in your controller action
+                });
+
+                // Use AJAX for submission to handle JSON response and toasts
+                $.ajax({
+                    url: form.attr('asp-action'), // Use asp-action for URL
+                    type: form.attr('method'),
+                    data: formData,
+                    processData: false, // Important for FormData
+                    contentType: false, // Important for FormData
+                    success: function(response) {
+                        // Handle success (e.g., redirect, show message)
+                        if(response.success) {
+                            // Display success toast (using a hypothetical toast function)
+                            showToast('Success', response.message, 'success');
+                            if(response.redirectUrl) {
+                                setTimeout(() => { window.location.href = response.redirectUrl; }, 2000); // Redirect after toast
+                            }
+                        } else {
+                            // This block might be hit for non-validation errors returned as success: false
+                            showToast('Error', response.message, 'danger');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors (e.g., display validation errors returned by BadRequest)
+                        console.error("Form submission error:", status, error, xhr.responseText);
+                        let errorMessage = "An unexpected error occurred.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                             errorMessage = xhr.responseJSON.message;
+                        }
+
+                        // Display toast for errors
+                        showToast('Error', errorMessage, 'danger');
+
+                        // Optionally display validation errors next to fields if needed
+                        // This would require more complex logic to map server errors to form fields
+                    }
+                });
+
+            });
+            // --- End File Upload Preview Logic ---
+
+            // Specimen related JavaScript functions (fetchSpecimens, addSpecimen, removeSpecimen)
+            // Keep the existing functions here as they are needed for the specimen dropdown functionality.
+            function fetchSpecimens() {
+                $.get('/Specimen/GetAll', function (data) {
+                    const dropdown = $('#specimenDropdown');
+                    dropdown.empty();
+                    dropdown.append('<option value="">-- Select Specimen --</option>'); // Add a default option
+                    // Assuming data is an array of objects with an 'Name' property (matching the Specimen model)
+                    data.forEach(s => dropdown.append(`<option value="${s.name}">${s.name}</option>`));
+
+                     // Note: In Create view, you typically don't pre-select a value from the model
+                     // as you are creating a *new* form.
+                    @* dropdown.val('@Model.SpecimenName'); // Keep this commented for Create page *@
+
+                }).fail(function(xhr, status, error) { // Improved error handling
+                     console.error("Failed to fetch specimens. Ensure /Specimen/GetAll endpoint exists and works. Status:", status, "Error:", error, "Response:", xhr.responseText);
+                     // Optionally update the dropdown to show an error state or a message
+                     const dropdown = $('#specimenDropdown');
+                     dropdown.empty();
+                     dropdown.append('<option value="">-- Error loading specimens --</option>');
+                });
+            }
+
+            function addSpecimen() {
+                const name = $('#newSpecimenInput').val().trim(); // Trim whitespace
+                if (!name) {
+                    alert("Please enter a specimen name.");
+                    return;
+                }
+                 // Optional: Check if specimen already exists in the dropdown (case-insensitive check)
+                let exists = false;
+                $('#specimenDropdown option').each(function(){
+                     if ($(this).val() && $(this).val().toLowerCase() === name.toLowerCase()) {
+                         exists = true;
+                         return false; // Break loop
+                     }
+                });
+                if (exists) {
+                     alert("Specimen '" + name + "' already exists.");
+                     $('#newSpecimenInput').val(''); // Clear input field
+                     return;
+                }
+
+                // Assuming your Add endpoint expects a JSON object { name: "Specimen Name" }
+                $.ajax({
+                    url: '/Specimen/Add',
+                    type: 'POST',
+                    contentType: 'application/json', // Specify content type
+                    data: JSON.stringify({ name: name }), // Stringify the data
+                    success: function (response) {
+                        $('#newSpecimenInput').val(''); // Clear input field
+                        fetchSpecimens(); // Refresh dropdown after adding
+                        // Optional: Select the newly added item
+                         if(response && response.name) {
+                            $('#specimenDropdown').val(response.name);
+                         }
+                    },
+                    error: function(xhr, status, error) {
+                         const errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : xhr.responseText || error;
+                         alert("Error adding specimen: " + errorMessage);
+                         console.error("Error adding specimen:", status, error, xhr.responseText);
+                    }
+                });
+            }
+
+            function removeSpecimen() {
+                const selectedName = $('#specimenDropdown').val();
+                if (!selectedName) {
+                     alert("Please select a specimen to remove.");
+                     return;
+                }
+                 if (selectedName === "") { // Prevent trying to remove the default "Select" option
+                     alert("Please select a valid specimen to remove.");
+                     return;
+                 }
+
+                // Confirm before deleting (optional but recommended)
+                 if (!confirm(`Are you sure you want to remove "${selectedName}" from the list? This cannot be undone."`)) {
+                     return;
+                 }
+
+                 // Need to get the ID to delete. Refetch the list with IDs to find the selected name's ID.
+                $.get('/Specimen/GetAll', function (data) {
+                    const specimen = data.find(x => x.name === selectedName);
+                    if (specimen && specimen.id) {
+                         // Assuming your Delete endpoint expects a JSON object { id: 123 }
+                        $.ajax({
+                            url: '/Specimen/Delete',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ id: specimen.id }), // Use the fetched ID
+                            success: function (response) {
+                                alert(response.message || "Specimen type deleted successfully!"); // Show success message
+                                fetchSpecimens(); // Refresh dropdown after deleting
+                                $('#specimenDropdown').val(''); // Reset dropdown selection
+                            },
+                            error: function(xhr, status, error) {
+                                 const errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : xhr.responseText || error;
+                                 alert("Error removing specimen: " + errorMessage);
+                                 console.error("Error removing specimen:", status, error, xhr.responseText);
+                            }
+                        });
+                    } else {
+                        alert("Selected specimen not found in the list or could not retrieve ID for deletion.");
+                        console.error("Specimen not found or ID missing for deletion:", selectedName, data);
+                    }
+                }).fail(function() {
+                    console.error("Failed to fetch specimens before removal attempt.");
+                     alert("Could not retrieve specimen list to process removal.");
+                });
+            }
+            // ... (End of specimen related JavaScript functions)
+
+            // --- Toast Notification Function ---
+            function showToast(title, message, type = 'info') {
+                const toastHtml = `
+                    <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <strong>${title}</strong> ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                const toastElement = $(toastHtml);
+                $('.toast-container').append(toastElement);
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+                // Remove toast element from DOM after it's hidden
+                toastElement.on('hidden.bs.toast', function () {
+                    $(this).remove();
+                });
+            }
+            // --- End Toast Notification Function ---
+
+        });
+    </script>
+}

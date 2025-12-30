@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Pathology Requisition System</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <!-- Header: Consolidated Hospital Header based on provided image -->
+    <header class="py-2 border-bottom hospital-form">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center text-md-start">
+                    <img src="~/images/logo.jpeg" alt="Hospital Logo" class="img-fluid">
+                </div>
+                <div class="col-md-7 text-center text-md-start border-end border-start px-4">
+                    <h2 class="hospital-name">Sri Balaji Action Medical Institute</h2>
+                    <p class="hospital-address mb-0">A-4, PASCHIM VIHAR, NEW DELHI-110 063</p>
+                    <p class="hospital-contact mt-0">TEL: 011-11-42888888 FAX: 011-11-25270725</p>
+                    <h3 class="form-main-title mt-3">SURGICAL PATHOLOGY REQUISITION FORM</h3>
+                </div>
+                <div class="col-md-3 text-center text-md-end d-flex flex-column justify-content-center">
+                    <p>SBAMI/DIAG/FR/08/2009</p>
+                    <img src="~/images/nabh.png" alt="Nabh Logo" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        @if (User.IsInRole("Doctor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pathology" asp-action="Index">
+                                    <i class="fas fa-list me-1"></i>All Forms
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="PathologyForm" asp-action="NurseForm">
+                                <i class="fas fa-plus me-1"></i>@(User.IsInRole("Nurse") ? "New Form" : "Create Form")
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Specimen" asp-action="Index">
+                                <i class="fas fa-flask me-1"></i>Specimen Types
+                            </a>
+                        </li>
+                        @if (User.IsInRole("Doctor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="PathologyForm" asp-action="Index">
+                                    <i class="fas fa-clipboard-list me-1"></i>Form Management
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>
+                                @if (User.IsInRole("Doctor"))
+                                {
+                                    <i class="fas fa-user-md me-1"></i>
+                                    @:Doctor
+                                }
+                                else if (User.IsInRole("Nurse"))
+                                {
+                                    <i class="fas fa-user-nurse me-1"></i>
+                                    @:Nurse
+                                }
+                                @User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header">
+                                    <small class="text-muted">
+                                        @if (User.IsInRole("Doctor"))
+                                        {
+                                            <i class="fas fa-user-md me-1"></i>
+                                            @:Doctor
+                                        }
+                                        else if (User.IsInRole("Nurse"))
+                                        {
+                                            <i class="fas fa-user-nurse me-1"></i>
+                                            @:Nurse
+                                        }
+                                    </small>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="UserInfo">
+                                        <i class="fas fa-info-circle me-1"></i>User Info
+                                    </a>
+                                </li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    }
+
+    <!-- Main content -->
+    <div class="container mt-4 mb-4">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-top footer text-muted mt-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                &copy; @DateTime.Now.Year - Pathology Requisition System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                </form>
+            }
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Add a container for toasts -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <!-- Toasts will be appended here -->
+        </div>
+    </div>
+</body>
+</html>
