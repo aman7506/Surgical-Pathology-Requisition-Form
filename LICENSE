@@ -1,0 +1,93 @@
+MIT License
+
+Copyright (c) 2025 Surgical Pathology Requisition Form Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+ADDITIONAL TERMS FOR HEALTHCARE USE
+
+This software is designed for use in healthcare environments for managing 
+surgical pathology requisition forms. The following additional terms apply:
+
+1. MEDICAL DISCLAIMER
+   This software is a documentation and workflow management tool. It does NOT:
+   - Provide medical diagnosis
+   - Replace professional medical judgment
+   - Guarantee accuracy of medical data
+   - Ensure regulatory compliance without proper implementation
+
+2. USER RESPONSIBILITY
+   Users and healthcare facilities implementing this software must:
+   - Ensure users are properly trained medical professionals
+   - Verify all data for accuracy and completeness
+   - Implement appropriate quality management systems
+   - Comply with all applicable healthcare regulations (HIPAA, CLIA, etc.)
+   - Perform required system validation and qualification
+   - Maintain appropriate backup and disaster recovery procedures
+
+3. REGULATORY COMPLIANCE
+   While this software is designed with HIPAA-ready architecture, achieving
+   full regulatory compliance requires:
+   - Organizational policies and procedures
+   - Business Associate Agreements (BAA) where applicable
+   - Risk assessments and security audits
+   - Staff training programs
+   - Documentation of compliance activities
+
+4. NO WARRANTY FOR MEDICAL USE
+   THE SOFTWARE IS PROVIDED FOR HEALTHCARE DOCUMENTATION PURPOSES ONLY.
+   THE AUTHORS AND CONTRIBUTORS MAKE NO WARRANTIES REGARDING:
+   - Suitability for clinical decision-making
+   - Accuracy of medical data
+   - Compliance with healthcare regulations
+   - Patient safety outcomes
+   - System availability or uptime
+
+5. LIMITATION OF LIABILITY
+   IN NO EVENT SHALL THE AUTHORS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+   LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM:
+   - Medical errors or misdiagnoses
+   - Data loss or corruption
+   - System failures or downtime
+   - Regulatory non-compliance
+   - Patient harm or adverse outcomes
+   - Any use or inability to use this software
+
+6. PROFESSIONAL USE ONLY
+   This software must only be used:
+   - In licensed healthcare facilities
+   - By qualified and authorized medical personnel
+   - Under appropriate medical supervision
+   - In compliance with facility quality management systems
+   - With proper informed consent and privacy protections
+
+7. CRITICAL ISSUES REPORTING
+   Users must immediately report any issues that may affect patient safety or
+   data integrity to their facility's quality assurance and IT security teams.
+
+8. COMMERCIAL USE
+   While this software is licensed under MIT License, healthcare facilities
+   planning commercial deployment or integration into commercial products
+   should contact the development team for additional licensing terms.
+
+---
+
+For questions about licensing, contact: aman7506@users.noreply.github.com
