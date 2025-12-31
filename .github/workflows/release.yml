@@ -1,0 +1,168 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: 'PathologyFormApp/PathologyFormApp.csproj'
+
+jobs:
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Get version from tag
+      id: get_version
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: Build Release
+      run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+      
+    - name: Publish Windows x64
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 --self-contained false -o ./publish/win-x64
+      
+    - name: Publish Linux x64
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r linux-x64 --self-contained false -o ./publish/linux-x64
+      
+    - name: Create Windows deployment package
+      run: |
+        cd ./publish/win-x64
+        zip -r ../../PathologyApp-${{ steps.get_version.outputs.version }}-win-x64.zip .
+        
+    - name: Create Linux deployment package
+      run: |
+        cd ./publish/linux-x64
+        tar -czf ../../PathologyApp-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz .
+        
+    - name: Generate checksums
+      run: |
+        sha256sum PathologyApp-${{ steps.get_version.outputs.version }}-win-x64.zip > checksums.txt
+        sha256sum PathologyApp-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz >> checksums.txt
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        name: Release ${{ steps.get_version.outputs.version }}
+        body: |
+          ## Surgical Pathology Requisition Form - Release ${{ steps.get_version.outputs.version }}
+          
+          ### Healthcare Information System for Hospital Pathology Workflows
+          
+          **Release Date**: ${{ github.event.head_commit.timestamp }}
+          
+          ### Features
+          - Complete surgical pathology requisition form management
+          - Role-based workflow: Nurse (data entry) → Doctor (review & diagnosis)
+          - 60+ medical and clinical data fields
+          - Complete audit trail with form history tracking
+          - Secure file upload and management
+          - ASP.NET Core Identity authentication
+          - Production-ready deployment configurations
+          
+          ### Technical Details
+          - **Framework**: ASP.NET Core 8.0 MVC
+          - **Database**: Microsoft SQL Server
+          - **ORM**: Entity Framework Core 8.0.2 + Dapper 2.1.66
+          - **UI**: Razor Views, Bootstrap 5, jQuery
+          
+          ### Deployment Packages
+          - **Windows (IIS)**: `PathologyApp-${{ steps.get_version.outputs.version }}-win-x64.zip`
+          - **Linux (Nginx)**: `PathologyApp-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz`
+          - **Docker**: Use `docker-compose.yml` from repository
+          
+          ### Documentation
+          - Complete installation guide in README.md
+          - Deployment instructions in ENTERPRISE_DEPLOYMENT_GUIDE.md
+          - Quick start in QUICKSTART_DEPLOYMENT.md
+          - Docker deployment in docker-compose.yml
+          
+          ### Security
+          - HTTPS enforcement
+          - Role-based authorization
+          - CSRF and XSS protection
+          - SQL injection prevention
+          - HIPAA-ready architecture
+          
+          ### Medical Disclaimer
+          This software is designed for use by trained medical professionals in hospital environments. 
+          See LICENSE file for complete terms and medical disclaimer.
+          
+          ### Verification
+          Verify package integrity using SHA256 checksums in `checksums.txt`
+          
+          ### Installation
+          See ENTERPRISE_DEPLOYMENT_GUIDE.md for complete deployment instructions.
+          
+          ### Support
+          - Documentation: See docs/ folder in repository
+          - Issues: Report via GitHub Issues
+          - Security: Email security concerns (do not post publicly)
+          
+        files: |
+          PathologyApp-${{ steps.get_version.outputs.version }}-win-x64.zip
+          PathologyApp-${{ steps.get_version.outputs.version }}-linux-x64.tar.gz
+          checksums.txt
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker-release:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Get version from tag
+      id: get_version
+      run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+    - name: Build and export Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        tags: pathologyapp:${{ steps.get_version.outputs.version }},pathologyapp:latest
+        outputs: type=docker,dest=/tmp/pathologyapp-image.tar
+        
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pathologyapp-docker-image
+        path: /tmp/pathologyapp-image.tar
+        retention-days: 30

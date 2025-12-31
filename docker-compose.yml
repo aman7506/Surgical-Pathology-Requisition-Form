@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pathology-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Password123
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - ./database/scripts:/docker-entrypoint-initdb.d
+    networks:
+      - pathology-network
+    restart: unless-stopped
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong@Password123 -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # Pathology Application
+  pathologyapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pathology-app
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=pathology_db;User Id=sa;Password=YourStrong@Password123;Encrypt=True;TrustServerCertificate=True;
+      - Logging__LogLevel__Default=Warning
+      - AllowedHosts=*
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - app-uploads:/app/wwwroot/uploads
+      - app-logs:/app/logs
+    networks:
+      - pathology-network
+    restart: unless-stopped
+    healthcheck:
+      test: curl -f http://localhost/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: pathology-nginx
+    depends_on:
+      - pathologyapp
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    networks:
+      - pathology-network
+    restart: unless-stopped
+    profiles:
+      - production
+
+volumes:
+  sqlserver-data:
+    driver: local
+  app-uploads:
+    driver: local
+  app-logs:
+    driver: local
+
+networks:
+  pathology-network:
+    driver: bridge

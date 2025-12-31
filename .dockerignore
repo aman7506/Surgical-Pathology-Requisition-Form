@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+publish/
+publish_output/
+
+# User uploads (contains sensitive data)
+**/wwwroot/uploads/
+
+# Configuration with secrets
+appsettings.Production.json
+appsettings.Staging.json
+secrets.json
+
+# Logs
+**/logs/
+*.log
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Database files
+*.db
+*.mdf
+*.ldf
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Node modules
+node_modules/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Test results
+TestResults/
+
+# Package files
+*.nupkg
+*.snupkg
+
+# MSI installers
+*.msi
+*.exe
+*.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
